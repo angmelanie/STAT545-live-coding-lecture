@@ -10,3 +10,5 @@ plot(x, y)
 abline(a, b, col = "purple")
 
 dev.print(pdf, "toy_line_plot.pdf")
+
+test 1
