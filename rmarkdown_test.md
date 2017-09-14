@@ -21,6 +21,7 @@ plot(x, y)
 
 
 
+
 ```r
 summary(x)
 ```
