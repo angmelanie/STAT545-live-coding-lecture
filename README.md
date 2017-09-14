@@ -5,3 +5,5 @@ Test - im editing this read me file!
 Nathan was indeed here
 
 This line was added in RStudio! GO SDE!
+
+Edited on web - remote conflict
