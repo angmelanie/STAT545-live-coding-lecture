@@ -1,9 +1,3 @@
-# stat545repo
-test repo for stat 545
+# stat545 live coding repo
 
-Test - im editing this read me file!
-Nathan was indeed here
-
-This line was added in RStudio! GO SDE!
-
-This is edited in Rstudio
+This repo contains a compilation of files worked on during lecture (STAT 545)
