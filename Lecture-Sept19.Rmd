@@ -363,6 +363,16 @@ mutate(gapminder,
 
 __Exercise__: Make a new column called `cc` that pastes the country name followed by the continent, separated by a comma. (Hint: use the `paste` function with the `sep=", "` argument).
 
+```{r}
+mutate(gapminder,
+  cc = paste("country", "continent", sep = ","))
+
+gapminder$cc <- mutate(gapminder,
+  cc = paste("country", "continent", sep = ","))
+
+```
+
+
 #### `summarize` and `group_by`
 
 `summarize` reduces a tibble according to summary statistics.
@@ -402,7 +412,27 @@ out1 %>%
 
 
 __Exercise__: Find the minimum GDP per capita experienced by each country
+```{r}
+gapminder %>% 
+  group_by(country) %>%
+  summarise(min(gdpPercap))
+```
+
 
 __Exercise__: How many years of record does each country have?
+```{r}
+gapminder %>%
+  group_by(country) %>%
+  summarize(n_distinct(year))
+```
 
 __Exercise__: Within Asia, what are the min and max life expectancies experienced in each year?
+
+```{r}
+gapminder %>%
+  filter(continent=="Asia") %>%
+  group_by(year) %>%
+  summarize(minexp=min(lifeExp),
+            maxexp=max(lifeExp))
+```
+
