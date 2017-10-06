@@ -2,10 +2,15 @@
 title: "cm006 Notes and Exercises: Intro to ggplot2"
 author: "Melanie Ang"
 date: '2017-09-21'
-output: html_document
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
 ```{r}
+
+library(tidyverse)
+library(gapminder)
 suppressPackageStartupMessages(library(tidyverse))  # The tidyverse contains ggplot2!
 suppressPackageStartupMessages(library(gapminder))
 knitr::opts_chunk$set(fig.width=4, fig.height=3)
@@ -147,6 +152,7 @@ p2
 4. To `p2`, add another layer called `scale_x_log10()`. Make a second plot by redoing the plot in (1), but replacing `gdpPercap` with `log10(gdpPercap)`. What do you notice?
 
 ```{r}
+
 p2 <- p2 + scale_x_log10()
 p2
 
@@ -160,6 +166,7 @@ p3 <- ggplot(gapminder, aes(x = log10(gdpPercap),
 p3
 
 # we get the same figure! :)
+# ggplot2 is the package and ggplot is the function within the package
 #? is , and + the same thing
 
 ```
