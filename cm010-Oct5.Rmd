@@ -51,14 +51,14 @@ View("locations")
 
 ### Release and Year
 
-Produce a data frame with all the albums ('release'), artist ('artist_name') and the year ('year') in which album was published? We only want values where all are present, no NAs.
+Question: Produce a data frame with all the albums ('release'), artist ('artist_name') and the year ('year') in which album was published? We only want values where all are present, no NAs.
 
 ```{r}
 relartyear <- inner_join(locations, songs, by = "title") %>% #artist name is in both, but not unique
   select(artist_name.x, year, release)
-
 # title.x and title.y
 # if there are 2 variables with the same name and they are joined together in the same table
+# you can always do it this way:
 
 relartyear <- inner_join(locations, songs, by = c("title", "artist_name")) %>% 
   # you can join by both!
@@ -66,4 +66,58 @@ relartyear <- inner_join(locations, songs, by = c("title", "artist_name")) %>%
   select(artist_name, year, release)
 
 ```
+
+Question: Identify the year where most albums are published, number of releases per year
+
+```{r}
+# my trial:
+inner_join(locations, songs, by = "title") %>%
+  select(release, year) %>%
+  arrange(year) %>%
+  group_by(year) %>%
+  summarize(relperyear = count(year))
+
+# ANSWER:
+inner_join(locations, songs, by = "title") %>%
+  count(year)
+```
+
+
+# RESHAPING
+```{r}
+data("singer_locations")
+View(singer_locations)
+```
+
+Plot year over duration and artist hotness, but what if you want to add duration as well?
+You could add another geometry object +geom_point()
+Or you could gather to move all variables within one column
+
+```{r}
+mydata <- singer_locations %>%
+  select(year, artist_hotttnesss, artist_familiarity, duration)
+
+mydata %>%
+  filter(year > 1900) %>%
+  ggplot(aes(x = year, y = duration)) +
+  geom_point()
+```
+
+ggplot prefers long data frames aka gather()
+
+```{r}
+# transform into long version
+mydata_long <- mydata %>%
+  gather(key = "Measure", value = "Units", artist_hotttnesss:duration) # `:` you get everything between
+
+mydata_long %>%
+  filter(year > 1900) %>%
+  ggplot(aes(x = year, y = Units)) +
+  geom_point() +
+  facet_wrap( ~ Measure) +
+  scale_x_log10()
+
+```
+
+
 
