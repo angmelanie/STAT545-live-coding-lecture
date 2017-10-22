@@ -1,0 +1,29 @@
+---
+title: "cm014-oct19"
+author: "Melanie Ang"
+date: '2017-10-19'
+output: html_document
+---
+
+# Guest lecture - visualization
+
+## Colour for plots
+- luminance
+- saturation
+- hue
+
+### Colour limited number of bins (6-12 bins)
+Think about plotting spatial maps
+
+?within colour luminance, sat, hue?
+
+### Package
+- viridis within R
+- colourful, perception, colour-blind safe, luminance
+
+## Bar vs line charts
+- bar categorical
+- line ordered
+
+- diverging aka start at 0, increase or decrease from there
+- colour about 10 diverging categories
