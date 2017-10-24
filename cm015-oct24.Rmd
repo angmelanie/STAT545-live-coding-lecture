@@ -1,0 +1,183 @@
+---
+title: "cm015-oct24"
+author: "Melanie Ang"
+date: '2017-10-24'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# R for strings
+
+```{r}
+my_string <- "Surrounded by quotes.' you can even put single quotes within "
+my_string <- 'hello "hey" you can use double quotes within by starting with single quote'
+my_string <- 'hello \'or put a back slash if you want to use quote within'
+my_string <- "A slash \ "   # this doesn't show up
+my_string <- "A slash \\ "  # but if you put a double slash
+
+# Homework: how do you put a single slash in a string?
+my_string <- "A slash '\\' "
+
+
+```
+
+```{r}
+devtools::install_github("joeybernhardt/singer")
+library(singer)
+places <- unique(singer_locations$city)
+```
+
+## Tools of the trade
+
+```{r}
+devtools::install_github("tidyverse/glue")
+library(tidyverse)
+library(stringr)
+library(glue)
+```
+
+glue and paste
+
+```{r}
+my_name <- "Mel"
+age <- 26
+colour <- "red"
+
+# glue and paste, same purpose. glue easier to read
+glue("My name is {my_name}. My age two years ago was {age - 2}.") 
+paste0("My name is ",my_name,". My age two years ago was " ,age - 2) # commas surrounding obj
+```
+
+indentation - preserves indentation
+
+```{r}
+glue("
+     My name is 
+     {my_name}.
+     My age two years ago was {age - 2}.")
+```
+
+## Challenge
+
+Phrase: Today is Wednesday, October 24, 2017 and the sun shines
+
+use: Sys.Date()
+glue
+
+```{r}
+Sys.Date()
+
+phrase <- glue("Today is {Sys.Date()} and the sun shines")
+phrase <- glue("Today is {Today_date} and the sun shines",
+               Today_date = Sys.Date())
+```
+
+```{r}
+phrase <- "Today is {Today_date} and the sun shines"
+phrase <- glue(phrase, Today_date = format(Sys.Date(), "%A, %B %d, %Y"))
+?format
+?Sys.Date
+```
+
+`glue_data` - to glue data frames together, recognizes the variables in the data frames
+
+```{r}
+
+singer_locations %>%
+  glue_data("{artist_name} is from {city}.") %>%
+  head()
+```
+
+Stringr package
+
+```{r}
+?getNamespaceExports
+
+# provides all the functions produce from the package
+getNamespaceExports("stringr") %>% 
+  str_view("str_") # finds all string that displays a certain pattern aka anything that starts with str_
+```
+
+```{r}
+getNamespaceExports("stringr") %>%
+  str_subset("str_") $
+```
+
+### Challenge
+Stringr is good for cleaning data frames
+
+```{r}
+places <- unique(singer_locations$city)
+```
+
+And, lets get all the places containing the strog "york"
+
+```{r}
+places %>%
+  str_subset("york")
+
+places %>%
+  str_subset("York")
+
+places %>%
+  str_to_lower() %>% # change everything to lower case and search
+  str_subset("york") # but this loses the ability to tell if its upper or lower
+
+
+```
+
+Regular expressions
+
+```{r}
+places %>%
+  str_subset("[Yyb]ork") # this will search both upper, lower case y and bork and provide it
+
+places %>%
+  str_subset(coll("york", ignore_case = TRUE)) # not considering the case
+
+places %>%
+  str_subset("York$") # for all yorks that ends a string
+```
+
+
+```{r}
+"[:digit:]"
+
+# * means 0, 1 or more
+places %>%
+  str_subset("B.a*")
+```
+
+
+```{r}
+test_string <- "hello "
+test_string_2 <- " hello"
+test_string_3 <- " hey hello "
+
+?trimws # base r
+?trim # glue package
+
+trim(test_string_3) 
+# this will remove beginning and trailing spaces from a character
+
+
+# but what about from a data frame - does it still remove beg and trailing in a data frame?
+colours <- c("red ", " navy blue ", " yellow")
+numbers <- c(1 , 2, 3)
+my_data_frame <- data.frame(colours, numbers)
+
+my_data_frame %>%
+  trim(my_data_frame$colours)
+
+my_data_frame$colours %>%
+  str_subset(" $")
+
+my_data_frame$colours %>%
+  str_subset("$ ")
+
+as.data.frame(lapply(my_data_frame, trimws), stringsAsFactors = TRUE)
+```
+
