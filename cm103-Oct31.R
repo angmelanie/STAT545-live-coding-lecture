@@ -28,10 +28,12 @@ library(listviewer)
 library(purrr)
 
 # [ ] you can use this to indx elements or to pull out items in a list
-jsonedit(gh_users)
+jsonedit(gh_users) # jsonedit to look interactively within a list
 
 x <- map(gh_users, `[`, c("login", "name", "id", "location"))
 x
 
 y <- map(gh_users, magrittr::extract, c("login", "name") )
 y
+
+
